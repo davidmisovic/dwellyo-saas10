@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Dwellyo</title>
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">Dwellyo.ai</h1>
+            <div class="nav-links">
+                <span>Welcome, <%= user.full_name %></span>
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+        <aside class="sidebar">
+            <ul>
+                <li><a href="/dashboard">📊 Dashboard</a></li>
+                <li><a href="/properties">🏠 Properties</a></li>
+                <li><a href="/leads">👥 Leads</a></li>
+                <li><a href="#conversations">💬 AI Conversations</a></li>
+                <li><a href="/pricing">💳 Pricing</a></li>
+                <li><a href="#settings">⚙️ Settings</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <h1>Dashboard Overview</h1>
+            <p style="margin-bottom: 2rem; color: #666;">Welcome to your AI rental management center</p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Properties</h3>
+                    <p class="stat-number"><%= stats.totalProperties %></p>
+                    <small style="color: #666;">Active listings</small>
+                </div>
+                <div class="stat-card">
+                    <h3>Active Leads</h3>
+                    <p class="stat-number"><%= stats.activeLeads %></p>
+                    <small style="color: #666;">Potential tenants</small>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Leads</h3>
+                    <p class="stat-number"><%= stats.totalLeads %></p>
+                    <small style="color: #666;">All inquiries</small>
+                </div>
+                <div class="stat-card">
+                    <h3>Rented Units</h3>
+                    <p class="stat-number"><%= stats.occupiedProperties %></p>
+                    <small style="color: #666;">Currently occupied</small>
+                </div>
+            </div>
+
+            <div class="quick-actions">
+                <button class="btn-primary" onclick="window.location.href='/properties'">+ Add Property</button>
+                <button class="btn-secondary" onclick="window.location.href='/leads'">View All Leads</button>
+            </div>
+
+            <% if (recentProperties && recentProperties.length > 0) { %>
+            <div style="margin-top: 3rem;">
+                <h2>Recent Properties</h2>
+                <div style="background: white; border-radius: 10px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-top: 1rem;">
+                    <% recentProperties.forEach(property => { %>
+                        <div style="border-bottom: 1px solid #eee; padding: 1rem 0; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h4 style="margin-bottom: 0.5rem;"><%= property.title %></h4>
+                                <p style="color: #666; margin: 0;"><%= property.address %></p>
+                            </div>
+                            <div style="text-align: right;">
+                                <p style="font-weight: bold; color: #4CAF50; margin: 0;">€<%= property.rent_price %></p>
+                                <small style="color: #666;"><%= property.status %></small>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+            <% } %>
+
+            <% if (recentLeads && recentLeads.length > 0) { %>
+            <div style="margin-top: 3rem;">
+                <h2>Recent Leads</h2>
+                <div style="background: white; border-radius: 10px; padding: 1.5rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-top: 1rem;">
+                    <% recentLeads.forEach(lead => { %>
+                        <div style="border-bottom: 1px solid #eee; padding: 1rem 0; display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h4 style="margin-bottom: 0.5rem;"><%= lead.name %></h4>
+                                <p style="color: #666; margin: 0;"><%= lead.email %></p>
+                            </div>
+                            <div style="text-align: right;">
+                                <span style="padding: 0.25rem 0.75rem; background: <%= lead.status === 'new' ? '#e3f2fd' : '#f3e5f5' %>; border-radius: 15px; font-size: 0.8rem;">
+                                    <%= lead.status %>
+                                </span>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </div>
+            <% } %>
+
+            <% if ((!recentProperties || recentProperties.length === 0) && (!recentLeads || recentLeads.length === 0)) { %>
+            <div style="text-align: center; margin-top: 3rem; padding: 3rem; background: #f8f9fa; border-radius: 10px;">
+                <h3>🚀 Let's Get Started!</h3>
+                <p style="margin: 1rem 0; color: #666;">Add your first property to start automating your rental management</p>
+                <button class="btn-primary" onclick="window.location.href='/properties'">Add Your First Property</button>
+            </div>
+            <% } %>
+        </main>
+    </div>
+
+    <script>
+        // Simple dashboard functionality
+        function addProperty() {
+            window.location.href = '/properties';
+        }
+    </script>
+</body>
+</html>

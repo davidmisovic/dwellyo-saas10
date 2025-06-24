@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing - Dwellyo</title>
+    <link href="/css/style.css" rel="stylesheet">
+    <style>
+        .pricing-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .pricing-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            position: relative;
+            border: 2px solid transparent;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .pricing-card:hover {
+            transform: translateY(-5px);
+        }
+        .pricing-card.featured {
+            border-color: #4CAF50;
+            transform: scale(1.05);
+        }
+        .plan-badge {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #4CAF50;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        .plan-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        .plan-price {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 0.5rem;
+        }
+        .plan-price .currency {
+            font-size: 1.5rem;
+        }
+        .plan-price .period {
+            font-size: 1rem;
+            color: #666;
+        }
+        .plan-description {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+        .feature-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+        .feature-list li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+        }
+        .feature-list li::before {
+            content: "✓";
+            color: #4CAF50;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+        .feature-list li.not-included {
+            color: #999;
+        }
+        .feature-list li.not-included::before {
+            content: "✗";
+            color: #ccc;
+        }
+        .plan-button {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .plan-button.primary {
+            background: #4CAF50;
+            color: white;
+        }
+        .plan-button.primary:hover {
+            background: #45a049;
+        }
+        .plan-button.secondary {
+            background: #f5f5f5;
+            color: #333;
+            border: 2px solid #e0e0e0;
+        }
+        .plan-button.secondary:hover {
+            background: #e0e0e0;
+        }
+        .faq-section {
+            margin-top: 4rem;
+            background: #f8f9fa;
+            padding: 3rem;
+            border-radius: 15px;
+        }
+        .faq-item {
+            margin-bottom: 2rem;
+        }
+        .faq-question {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        .faq-answer {
+            color: #666;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">Dwellyo.ai</h1>
+            <div class="nav-links">
+                <% if (user) { %>
+                    <a href="/dashboard">Dashboard</a>
+                    <a href="/logout">Logout</a>
+                <% } else { %>
+                    <a href="/login">Login</a>
+                    <a href="/register" class="btn-primary">Get Started</a>
+                <% } %>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pricing-container" style="margin-top: 80px;">
+        <div style="text-align: center; margin-bottom: 3rem;">
+            <h1 style="font-size: 3rem; margin-bottom: 1rem; color: #333;">Simple, Transparent Pricing</h1>
+            <p style="font-size: 1.2rem; color: #666; max-width: 600px; margin: 0 auto;">
+                Choose the plan that fits your rental portfolio. All plans include our AI assistant and core features.
+            </p>
+        </div>
+
+        <div class="pricing-grid">
+            <!-- Basic Plan -->
+            <div class="pricing-card">
+                <div class="plan-name">Basic</div>
+                <div class="plan-price">
+                    <span class="currency">€</span>15<span class="period">/month</span>
+                </div>
+                <div class="plan-description">Perfect for small landlords getting started</div>
+
+                <ul class="feature-list">
+                    <li>Up to 3 properties</li>
+                    <li>AI email responses</li>
+                    <li>Lead management</li>
+                    <li>Basic analytics</li>
+                    <li>Email support</li>
+                    <li class="not-included">WhatsApp integration</li>
+                    <li class="not-included">Tenant screening</li>
+                    <li class="not-included">Priority support</li>
+                </ul>
+
+                <button class="plan-button secondary" onclick="selectPlan('basic')">
+                    <% if (user && user.subscription_tier === 'basic') { %>
+                        Current Plan
+                    <% } else { %>
+                        Start Free Trial
+                    <% } %>
+                </button>
+            </div>
+
+            <!-- Professional Plan -->
+            <div class="pricing-card featured">
+                <div class="plan-badge">Most Popular</div>
+                <div class="plan-name">Professional</div>
+                <div class="plan-price">
+                    <span class="currency">€</span>35<span class="period">/month</span>
+                </div>
+                <div class="plan-description">Ideal for growing rental businesses</div>
+
+                <ul class="feature-list">
+                    <li>Up to 15 properties</li>
+                    <li>AI email & WhatsApp responses</li>
+                    <li>Advanced lead management</li>
+                    <li>Tenant screening reports</li>
+                    <li>Viewing scheduling automation</li>
+                    <li>Advanced analytics</li>
+                    <li>Priority email support</li>
+                    <li class="not-included">Phone support</li>
+                </ul>
+
+                <button class="plan-button primary" onclick="selectPlan('professional')">
+                    <% if (user && user.subscription_tier === 'professional') { %>
+                        Current Plan
+                    <% } else { %>
+                        Start Free Trial
+                    <% } %>
+                </button>
+            </div>
+
+            <!-- Enterprise Plan -->
+            <div class="pricing-card">
+                <div class="plan-name">Enterprise</div>
+                <div class="plan-price">
+                    <span class="currency">€</span>59<span class="period">/month</span>
+                </div>
+                <div class="plan-description">For large property management companies</div>
+
+                <ul class="feature-list">
+                    <li>Unlimited properties</li>
+                    <li>Full AI automation suite</li>
+                    <li>Advanced tenant screening</li>
+                    <li>Multi-language support</li>
+                    <li>Custom integrations</li>
+                    <li>White-label options</li>
+                    <li>Dedicated account manager</li>
+                    <li>24/7 phone support</li>
+                </ul>
+
+                <button class="plan-button primary" onclick="selectPlan('enterprise')">
+                    <% if (user && user.subscription_tier === 'enterprise') { %>
+                        Current Plan
+                    <% } else { %>
+                        Start Free Trial
+                    <% } %>
+                </button>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <h2 style="text-align: center; margin-bottom: 2rem; color: #333;">Frequently Asked Questions</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">How does the free trial work?</div>
+                <div class="faq-answer">
+                    All plans come with a 14-day free trial. No credit card required. You can cancel anytime during the trial period without being charged.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Can I change plans anytime?</div>
+                <div class="faq-answer">
+                    Yes! You can upgrade or downgrade your plan at any time. Changes take effect at the start of your next billing cycle.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What happens if I exceed my property limit?</div>
+                <div class="faq-answer">
+                    We'll notify you when you're approaching your limit. You can either upgrade to a higher plan or remove older properties to stay within your limit.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Is my data secure?</div>
+                <div class="faq-answer">
+                    Absolutely. We use bank-level encryption and comply with GDPR regulations. Your data is stored securely and never shared with third parties.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Do you offer refunds?</div>
+                <div class="faq-answer">
+                    Yes, we offer a 30-day money-back guarantee. If you're not satisfied with Dwellyo, contact us for a full refund.
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin: 4rem 0;">
+            <h3>Still have questions?</h3>
+            <p style="color: #666; margin: 1rem 0;">Our team is here to help you choose the right plan.</p>
+            <a href="mailto:support@dwellyo.ai" class="btn-primary" style="display: inline-block; padding: 1rem 2rem; text-decoration: none;">
+                Contact Support
+            </a>
+        </div>
+    </main>
+
+    <script>
+        function selectPlan(planName) {
+            <% if (user) { %>
+                // User is logged in, handle plan selection
+                if (confirm(`Switch to ${planName} plan?`)) {
+                    // TODO: Implement plan switching
+                    alert('Plan switching coming soon! For now, please contact support.');
+                }
+            <% } else { %>
+                // User not logged in, redirect to registration
+                window.location.href = '/register';
+            <% } %>
+        }
+    </script>
+</body>
+</html>

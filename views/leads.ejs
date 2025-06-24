@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leads - Dwellyo</title>
+    <link href="/css/style.css" rel="stylesheet">
+    <style>
+        .lead-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #2196F3;
+        }
+        .lead-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        .lead-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .status-new { background: #e3f2fd; color: #1976d2; }
+        .status-contacted { background: #fff3e0; color: #f57c00; }
+        .status-qualified { background: #e8f5e8; color: #2e7d32; }
+        .status-viewing_scheduled { background: #f3e5f5; color: #7b1fa2; }
+        .status-applied { background: #e0f2f1; color: #00796b; }
+        .status-rejected { background: #ffebee; color: #c62828; }
+        .status-rented { background: #e8f5e8; color: #2e7d32; }
+        .filter-bar {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .filter-select {
+            padding: 0.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">Dwellyo.ai</h1>
+            <div class="nav-links">
+                <span>Welcome, <%= user.full_name %></span>
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard">
+        <aside class="sidebar">
+            <ul>
+                <li><a href="/dashboard">📊 Dashboard</a></li>
+                <li><a href="/properties">🏠 Properties</a></li>
+                <li><a href="/leads" style="background: rgba(255,255,255,0.1);">👥 Leads</a></li>
+                <li><a href="#conversations">💬 AI Conversations</a></li>
+                <li><a href="/pricing">💳 Pricing</a></li>
+                <li><a href="#settings">⚙️ Settings</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <div>
+                    <h1>Leads</h1>
+                    <p style="color: #666; margin: 0;">Manage potential tenants and inquiries</p>
+                </div>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <label for="statusFilter" style="font-weight: 500;">Filter by status:</label>
+                <select id="statusFilter" class="filter-select" onchange="filterLeads()">
+                    <option value="all">All Leads</option>
+                    <option value="new">New</option>
+                    <option value="contacted">Contacted</option>
+                    <option value="qualified">Qualified</option>
+                    <option value="viewing_scheduled">Viewing Scheduled</option>
+                    <option value="applied">Applied</option>
+                    <option value="rejected">Rejected</option>
+                    <option value="rented">Rented</option>
+                </select>
+
+                <label for="sortBy" style="font-weight: 500; margin-left: 2rem;">Sort by:</label>
+                <select id="sortBy" class="filter-select" onchange="sortLeads()">
+                    <option value="newest">Newest First</option>
+                    <option value="oldest">Oldest First</option>
+                    <option value="name">Name A-Z</option>
+                </select>
+            </div>
+
+            <% if (leads && leads.length > 0) { %>
+                <div id="leadsContainer">
+                    <% leads.forEach(lead => { %>
+                        <div class="lead-card" data-status="<%= lead.status %>">
+                            <div class="lead-header">
+                                <div>
+                                    <h3 style="margin: 0 0 0.5rem 0;"><%= lead.name %></h3>
+                                    <p style="color: #666; margin: 0 0 0.5rem 0;">📧 <%= lead.email %></p>
+                                    <% if (lead.phone) { %>
+                                        <p style="color: #666; margin: 0 0 0.5rem 0;">📞 <%= lead.phone %></p>
+                                    <% } %>
+                                    <% if (lead.properties) { %>
+                                        <p style="color: #4CAF50; margin: 0; font-weight: 500;">🏠 <%= lead.properties.title %></p>
+                                    <% } %>
+                                </div>
+                                <div style="text-align: right;">
+                                    <select class="lead-status status-<%= lead.status %>" 
+                                            onchange="updateLeadStatus('<%= lead.id %>', this.value)" 
+                                            style="border: none; background: transparent; font-weight: 500;">
+                                        <option value="new" <%= lead.status === 'new' ? 'selected' : '' %>>New</option>
+                                        <option value="contacted" <%= lead.status === 'contacted' ? 'selected' : '' %>>Contacted</option>
+                                        <option value="qualified" <%= lead.status === 'qualified' ? 'selected' : '' %>>Qualified</option>
+                                        <option value="viewing_scheduled" <%= lead.status === 'viewing_scheduled' ? 'selected' : '' %>>Viewing Scheduled</option>
+                                        <option value="applied" <%= lead.status === 'applied' ? 'selected' : '' %>>Applied</option>
+                                        <option value="rejected" <%= lead.status === 'rejected' ? 'selected' : '' %>>Rejected</option>
+                                        <option value="rented" <%= lead.status === 'rented' ? 'selected' : '' %>>Rented</option>
+                                    </select>
+                                    <p style="color: #666; margin: 0.5rem 0 0 0; font-size: 0.9rem;">
+                                        <%= new Date(lead.created_at).toLocaleDateString() %>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <% if (lead.message) { %>
+                                <div style="background: #f8f9fa; padding: 1rem; border-radius: 5px; margin-bottom: 1rem;">
+                                    <strong>Initial Message:</strong>
+                                    <p style="margin: 0.5rem 0 0 0; color: #666;"><%= lead.message %></p>
+                                </div>
+                            <% } %>
+
+                            <div style="display: flex; gap: 1rem;">
+                                <button class="btn-primary" onclick="contactLead('<%= lead.email %>')">📧 Email</button>
+                                <% if (lead.phone) { %>
+                                    <button class="btn-secondary" onclick="callLead('<%= lead.phone %>')">📞 Call</button>
+                                <% } %>
+                                <button class="btn-secondary" onclick="viewLeadDetails('<%= lead.id %>')">View Details</button>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } else { %>
+                <div style="text-align: center; padding: 4rem; background: #f8f9fa; border-radius: 10px;">
+                    <h3>👥 No Leads Yet</h3>
+                    <p style="margin: 1rem 0; color: #666;">Your AI assistant will automatically capture and manage leads from your property listings</p>
+                    <button class="btn-primary" onclick="window.location.href='/properties'">Add Properties to Get Leads</button>
+                </div>
+            <% } %>
+        </main>
+    </div>
+
+    <script>
+        function updateLeadStatus(leadId, newStatus) {
+            fetch(`/api/leads/${leadId}/status`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: newStatus })
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Update the visual status
+                    const selectElement = event.target;
+                    selectElement.className = `lead-status status-${newStatus}`;
+
+                    // Show success message
+                    showNotification('Lead status updated successfully!');
+                } else {
+                    alert('Error updating lead status');
+                }
+            })
+            .catch(error => {
+                alert('Error: ' + error.message);
+            });
+        }
+
+        function filterLeads() {
+            const filter = document.getElementById('statusFilter').value;
+            const leadCards = document.querySelectorAll('.lead-card');
+
+            leadCards.forEach(card => {
+                if (filter === 'all' || card.dataset.status === filter) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function sortLeads() {
+            const sortBy = document.getElementById('sortBy').value;
+            const container = document.getElementById('leadsContainer');
+            const cards = Array.from(container.children);
+
+            cards.sort((a, b) => {
+                if (sortBy === 'newest') {
+                    // Sort by created date (newest first)
+                    return b.querySelector('p').textContent.localeCompare(a.querySelector('p').textContent);
+                } else if (sortBy === 'oldest') {
+                    // Sort by created date (oldest first)
+                    return a.querySelector('p').textContent.localeCompare(b.querySelector('p').textContent);
+                } else if (sortBy === 'name') {
+                    // Sort by name A-Z
+                    return a.querySelector('h3').textContent.localeCompare(b.querySelector('h3').textContent);
+                }
+            });
+
+            // Re-append sorted cards
+            cards.forEach(card => container.appendChild(card));
+        }
+
+        function contactLead(email) {
+            window.location.href = `mailto:${email}?subject=Re: Your Property Inquiry&body=Hi there,%0D%0A%0D%0AThank you for your interest in our property. I'd be happy to help answer any questions you might have.%0D%0A%0D%0ABest regards`;
+        }
+
+        function callLead(phone) {
+            window.location.href = `tel:${phone}`;
+        }
+
+        function viewLeadDetails(leadId) {
+            // TODO: Implement lead details view
+            alert('Lead details view coming soon!');
+        }
+
+        function showNotification(message) {
+            // Simple notification system
+            const notification = document.createElement('div');
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #4CAF50;
+                color: white;
+                padding: 1rem;
+                border-radius: 5px;
+                z-index: 1000;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            `;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

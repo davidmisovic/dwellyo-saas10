@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - Dwellyo</title>
+    <link href="/css/style.css" rel="stylesheet">
+    <style>
+        .error-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            padding: 2rem;
+        }
+        .error-content {
+            text-align: center;
+            color: white;
+            max-width: 500px;
+        }
+        .error-code {
+            font-size: 8rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+        .error-message {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .error-description {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        .error-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn-home {
+            background: white;
+            color: #4CAF50;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+        .btn-home:hover {
+            transform: translateY(-2px);
+        }
+        .btn-back {
+            background: transparent;
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border: 2px solid white;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .btn-back:hover {
+            background: white;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-content">
+            <div class="error-code">404</div>
+            <h1 class="error-message">Oops! Page Not Found</h1>
+            <p class="error-description">
+                The page you're looking for seems to have moved or doesn't exist. 
+                Don't worry, let's get you back on track!
+            </p>
+
+            <div class="error-actions">
+                <% if (user) { %>
+                    <a href="/dashboard" class="btn-home">Go to Dashboard</a>
+                <% } else { %>
+                    <a href="/" class="btn-home">Go Home</a>
+                <% } %>
+                <a href="javascript:history.back()" class="btn-back">Go Back</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

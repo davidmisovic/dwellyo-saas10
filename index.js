@@ -10,9 +10,27 @@ const PORT = process.env.PORT || 3000;
 
 // Initialize Supabase client
 const supabase = createClient(
-  process.env.SUPABASE_URL || 'your-supabase-url',
-  process.env.SUPABASE_ANON_KEY || 'your-supabase-key'
+  process.env.SUPABASE_URL || 'https://rxtepmxuaabisibnntdd.supabase.co',
+  process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ4dGVwbXh1YWFiaXNpYm5udGRkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA3NzY4MTEsImV4cCI6MjA2NjM1MjgxMX0.NGdSjDsGNT0Vx0mNVK2vhfg7g0WZiC6Sd1MeocrHanY'
 );
+
+// Test Supabase connection on startup
+(async () => {
+  try {
+    console.log('🔍 Testing Supabase connection...');
+    console.log('SUPABASE_URL:', process.env.SUPABASE_URL ? 'Set ✓' : 'Missing ✗');
+    console.log('SUPABASE_ANON_KEY:', process.env.SUPABASE_ANON_KEY ? 'Set ✓' : 'Missing ✗');
+
+    const { data, error } = await supabase.from('users').select('count');
+    if (error) {
+      console.log('❌ Database connection failed:', error.message);
+    } else {
+      console.log('✅ Database connection successful');
+    }
+  } catch (err) {
+    console.log('❌ Supabase setup error:', err.message);
+  }
+})();
 
 // Middleware
 app.use(cors());
@@ -189,39 +207,88 @@ app.get('/logout', (req, res) => {
 // API ROUTES
 // =================
 
-// User Registration
+// User Registration - IMPROVED WITH BETTER ERROR HANDLING
 app.post('/api/register', async (req, res) => {
   try {
+    console.log('🔑 Registration attempt started...');
+    console.log('📝 Request body:', { email: req.body.email, fullName: req.body.fullName, hasPassword: !!req.body.password });
+
     const { email, fullName, password } = req.body;
 
     // Validate input
     if (!email || !fullName || !password) {
+      console.log('❌ Validation failed: missing fields');
       return res.status(400).render('register', { 
         error: 'All fields are required' 
       });
     }
 
-    // Check if user already exists
-    const { data: existingUser } = await supabase
-      .from('users')
-      .select('email')
-      .eq('email', email)
-      .single();
-
-    if (existingUser) {
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      console.log('❌ Validation failed: invalid email format');
       return res.status(400).render('register', { 
-        error: 'User with this email already exists' 
+        error: 'Please enter a valid email address' 
       });
     }
 
+    // Validate password length
+    if (password.length < 6) {
+      console.log('❌ Validation failed: password too short');
+      return res.status(400).render('register', { 
+        error: 'Password must be at least 6 characters long' 
+      });
+    }
+
+    // Test database connection first
+    console.log('🔍 Testing database connection...');
+    const { error: connectionError } = await supabase
+      .from('users')
+      .select('count')
+      .limit(1);
+
+    if (connectionError) {
+      console.log('❌ Database connection failed:', connectionError);
+      return res.status(500).render('register', { 
+        error: 'Database connection failed. Please check your Supabase settings and try again.' 
+      });
+    }
+    console.log('✅ Database connection successful');
+
+    // Check if user already exists
+    console.log('👤 Checking if user exists...');
+    const { data: existingUser, error: checkError } = await supabase
+      .from('users')
+      .select('email')
+      .eq('email', email.toLowerCase())
+      .maybeSingle();
+
+    if (checkError) {
+      console.log('❌ Error checking existing user:', checkError);
+      return res.status(500).render('register', { 
+        error: `Database error: ${checkError.message}` 
+      });
+    }
+
+    if (existingUser) {
+      console.log('❌ User already exists');
+      return res.status(400).render('register', { 
+        error: 'An account with this email already exists. Please try logging in instead.' 
+      });
+    }
+    console.log('✅ Email is available');
+
     // Hash password
+    console.log('🔐 Hashing password...');
     const hashedPassword = await bcrypt.hash(password, 10);
+    console.log('✅ Password hashed successfully');
 
     // Create user
+    console.log('👤 Creating user account...');
     const { data, error } = await supabase
       .from('users')
       .insert([{ 
-        email, 
+        email: email.toLowerCase(),
         full_name: fullName,
         password_hash: hashedPassword,
         subscription_tier: 'trial'
@@ -229,7 +296,21 @@ app.post('/api/register', async (req, res) => {
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      console.log('❌ User creation failed:', error);
+      return res.status(500).render('register', { 
+        error: `Account creation failed: ${error.message}. Please try again.` 
+      });
+    }
+
+    if (!data) {
+      console.log('❌ No user data returned');
+      return res.status(500).render('register', { 
+        error: 'Account creation failed. Please try again.' 
+      });
+    }
+
+    console.log('✅ User created successfully:', { id: data.id, email: data.email });
 
     // Set session
     req.session.user = {
@@ -239,42 +320,50 @@ app.post('/api/register', async (req, res) => {
       subscription_tier: data.subscription_tier
     };
 
+    console.log('✅ Session created, redirecting to dashboard...');
     res.redirect('/dashboard');
+
   } catch (error) {
-    console.error('Registration error:', error);
+    console.error('💥 Registration error:', error);
     res.status(500).render('register', { 
-      error: 'Registration failed. Please try again.' 
+      error: `Registration failed: ${error.message}. Please try again or contact support.` 
     });
   }
 });
 
-// User Login
+// User Login - IMPROVED
 app.post('/api/login', async (req, res) => {
   try {
+    console.log('🔑 Login attempt started...');
     const { email, password } = req.body;
 
     if (!email || !password) {
+      console.log('❌ Login validation failed: missing credentials');
       return res.status(400).render('login', { 
         error: 'Email and password are required' 
       });
     }
 
     // Find user
+    console.log('👤 Looking for user...');
     const { data: user, error } = await supabase
       .from('users')
       .select('*')
-      .eq('email', email)
+      .eq('email', email.toLowerCase())
       .single();
 
     if (error || !user) {
+      console.log('❌ User not found:', error?.message);
       return res.status(400).render('login', { 
         error: 'Invalid email or password' 
       });
     }
 
     // Check password
+    console.log('🔐 Verifying password...');
     const validPassword = await bcrypt.compare(password, user.password_hash);
     if (!validPassword) {
+      console.log('❌ Invalid password');
       return res.status(400).render('login', { 
         error: 'Invalid email or password' 
       });
@@ -288,9 +377,10 @@ app.post('/api/login', async (req, res) => {
       subscription_tier: user.subscription_tier
     };
 
+    console.log('✅ Login successful, redirecting to dashboard...');
     res.redirect('/dashboard');
   } catch (error) {
-    console.error('Login error:', error);
+    console.error('💥 Login error:', error);
     res.status(500).render('login', { 
       error: 'Login failed. Please try again.' 
     });
@@ -350,38 +440,6 @@ app.post('/api/properties', requireAuth, async (req, res) => {
   }
 });
 
-// Update Property API
-app.put('/api/properties/:id', requireAuth, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { title, address, rent_price, deposit, description, bedrooms, bathrooms, status } = req.body;
-
-    const { data, error } = await supabase
-      .from('properties')
-      .update({
-        title,
-        address,
-        rent_price: parseFloat(rent_price),
-        deposit: deposit ? parseFloat(deposit) : null,
-        description,
-        bedrooms: bedrooms ? parseInt(bedrooms) : null,
-        bathrooms: bathrooms ? parseInt(bathrooms) : null,
-        status,
-        updated_at: new Date()
-      })
-      .eq('id', id)
-      .eq('user_id', req.session.user.id)
-      .select()
-      .single();
-
-    if (error) throw error;
-    res.json(data);
-  } catch (error) {
-    console.error('Update property error:', error);
-    res.status(500).json({ error: 'Failed to update property' });
-  }
-});
-
 // Delete Property API
 app.delete('/api/properties/:id', requireAuth, async (req, res) => {
   try {
@@ -400,162 +458,6 @@ app.delete('/api/properties/:id', requireAuth, async (req, res) => {
     res.status(500).json({ error: 'Failed to delete property' });
   }
 });
-
-// Add Lead API (for contact forms from property listings)
-app.post('/api/leads', async (req, res) => {
-  try {
-    const { property_id, name, email, phone, message } = req.body;
-
-    if (!property_id || !name || !email) {
-      return res.status(400).json({ 
-        error: 'Property ID, name, and email are required' 
-      });
-    }
-
-    const { data, error } = await supabase
-      .from('leads')
-      .insert([{
-        property_id,
-        name,
-        email,
-        phone,
-        message,
-        status: 'new'
-      }])
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    // Here you could trigger AI response or email notification
-    console.log('New lead created:', data);
-
-    res.json(data);
-  } catch (error) {
-    console.error('Add lead error:', error);
-    res.status(500).json({ error: 'Failed to add lead' });
-  }
-});
-
-// Get Leads API
-app.get('/api/leads', requireAuth, async (req, res) => {
-  try {
-    // Get user's properties first
-    const { data: properties } = await supabase
-      .from('properties')
-      .select('id')
-      .eq('user_id', req.session.user.id);
-
-    const propertyIds = properties?.map(p => p.id) || [];
-
-    // Get leads for user's properties
-    const { data: leads, error } = await supabase
-      .from('leads')
-      .select(`
-        *,
-        properties (
-          title,
-          address,
-          rent_price
-        )
-      `)
-      .in('property_id', propertyIds)
-      .order('created_at', { ascending: false });
-
-    if (error) throw error;
-    res.json(leads || []);
-  } catch (error) {
-    console.error('Get leads error:', error);
-    res.status(500).json({ error: 'Failed to fetch leads' });
-  }
-});
-
-// Update Lead Status API
-app.put('/api/leads/:id/status', requireAuth, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { status } = req.body;
-
-    const { data, error } = await supabase
-      .from('leads')
-      .update({ 
-        status,
-        updated_at: new Date()
-      })
-      .eq('id', id)
-      .select()
-      .single();
-
-    if (error) throw error;
-    res.json(data);
-  } catch (error) {
-    console.error('Update lead status error:', error);
-    res.status(500).json({ error: 'Failed to update lead status' });
-  }
-});
-
-// AI Chat Simulation API (placeholder for future AI integration)
-app.post('/api/chat', requireAuth, async (req, res) => {
-  try {
-    const { lead_id, message } = req.body;
-
-    // Store the conversation
-    const { data, error } = await supabase
-      .from('conversations')
-      .insert([{
-        lead_id,
-        message,
-        sender: 'human'
-      }])
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    // Simulate AI response (replace with actual AI integration later)
-    const aiResponse = generateSimpleAIResponse(message);
-
-    // Store AI response
-    const { data: aiData } = await supabase
-      .from('conversations')
-      .insert([{
-        lead_id,
-        message: aiResponse,
-        sender: 'ai'
-      }])
-      .select()
-      .single();
-
-    res.json({
-      human_message: data,
-      ai_response: aiData
-    });
-  } catch (error) {
-    console.error('Chat error:', error);
-    res.status(500).json({ error: 'Failed to process chat' });
-  }
-});
-
-// Simple AI response generator (placeholder)
-function generateSimpleAIResponse(message) {
-  const lowerMessage = message.toLowerCase();
-
-  if (lowerMessage.includes('viewing') || lowerMessage.includes('visit')) {
-    return "I'd be happy to schedule a viewing for you! What days work best for you this week?";
-  } else if (lowerMessage.includes('price') || lowerMessage.includes('rent')) {
-    return "The rental price includes utilities and is negotiable for long-term tenants. Would you like to discuss the details?";
-  } else if (lowerMessage.includes('available') || lowerMessage.includes('when')) {
-    return "The property is available for immediate move-in. When would you ideally like to start your tenancy?";
-  } else if (lowerMessage.includes('pet') || lowerMessage.includes('dog') || lowerMessage.includes('cat')) {
-    return "We do consider pets on a case-by-case basis. Could you tell me more about your pet?";
-  } else {
-    return "Thank you for your message! I'll make sure the landlord gets back to you within 24 hours with detailed information.";
-  }
-}
-
-// =================
-// ERROR HANDLING
-// =================
 
 // 404 handler
 app.use((req, res) => {
@@ -576,6 +478,5 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`🏠 Dwellyo server running on port ${PORT}`);
-  console.log(`🌐 URL: https://dwellyo-saas.${process.env.REPL_OWNER}.repl.co`);
-  console.log('🚀 Ready to revolutionize rental management!');
+  console.log(`🚀 Ready to revolutionize rental management!`);
 });

@@ -1,0 +1,1401 @@
+                                                                    <!DOCTYPE html>
+                                                                    <html lang="en">
+                                                                    <head>
+                                                                        <meta charset="UTF-8">
+                                                                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                                                        <title><%= title %></title>
+                                                                        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+                                                                        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+                                                                        <style>
+                                                                            :root {
+                                                                                --primary: #2563eb;
+                                                                                --primary-dark: #1d4ed8;
+                                                                                --primary-light: #3b82f6;
+                                                                                --secondary: #059669;
+                                                                                --accent: #f59e0b;
+                                                                                --success: #10b981;
+                                                                                --warning: #f59e0b;
+                                                                                --error: #ef4444;
+
+                                                                                --gray-50: #f9fafb;
+                                                                                --gray-100: #f3f4f6;
+                                                                                --gray-200: #e5e7eb;
+                                                                                --gray-300: #d1d5db;
+                                                                                --gray-400: #9ca3af;
+                                                                                --gray-500: #6b7280;
+                                                                                --gray-600: #4b5563;
+                                                                                --gray-700: #374151;
+                                                                                --gray-800: #1f2937;
+                                                                                --gray-900: #111827;
+
+                                                                                --white: #ffffff;
+                                                                                --black: #000000;
+
+                                                                                --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+                                                                                --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+                                                                                --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                                                                                --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+                                                                                --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+                                                                                --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                                                                            }
+
+                                                                            * {
+                                                                                margin: 0;
+                                                                                padding: 0;
+                                                                                box-sizing: border-box;
+                                                                            }
+
+                                                                            html {
+                                                                                scroll-behavior: smooth;
+                                                                            }
+
+                                                                            body {
+                                                                                font-family: 'Inter', system-ui, -apple-system, sans-serif;
+                                                                                background: var(--white);
+                                                                                color: var(--gray-900);
+                                                                                line-height: 1.6;
+                                                                                overflow-x: hidden;
+                                                                            }
+
+                                                                            /* Navigation */
+                                                                            .navbar {
+                                                                                position: fixed;
+                                                                                top: 0;
+                                                                                width: 100%;
+                                                                                z-index: 1000;
+                                                                                padding: 1rem 0;
+                                                                                background: rgba(255, 255, 255, 0.95);
+                                                                                backdrop-filter: blur(20px);
+                                                                                border-bottom: 1px solid var(--gray-100);
+                                                                                transition: all 0.3s ease;
+                                                                            }
+
+                                                                            .navbar.scrolled {
+                                                                                padding: 0.75rem 0;
+                                                                                box-shadow: var(--shadow-lg);
+                                                                                border-bottom-color: var(--gray-200);
+                                                                            }
+
+                                                                            .nav-container {
+                                                                                max-width: 1200px;
+                                                                                margin: 0 auto;
+                                                                                padding: 0 2rem;
+                                                                                display: flex;
+                                                                                justify-content: space-between;
+                                                                                align-items: center;
+                                                                            }
+
+                                                                            .logo {
+                                                                                font-size: 1.75rem;
+                                                                                font-weight: 800;
+                                                                                color: var(--primary);
+                                                                                text-decoration: none;
+                                                                                display: flex;
+                                                                                align-items: center;
+                                                                                gap: 0.5rem;
+                                                                            }
+
+                                                                            .logo i {
+                                                                                color: var(--secondary);
+                                                                            }
+
+                                                                            .nav-links {
+                                                                                display: flex;
+                                                                                align-items: center;
+                                                                                gap: 2rem;
+                                                                            }
+
+                                                                            .nav-links a {
+                                                                                text-decoration: none;
+                                                                                color: var(--gray-600);
+                                                                                font-weight: 500;
+                                                                                font-size: 0.95rem;
+                                                                                transition: all 0.2s ease;
+                                                                                position: relative;
+                                                                            }
+
+                                                                            .nav-links a:hover {
+                                                                                color: var(--primary);
+                                                                            }
+
+                                                                            .btn-nav {
+                                                                                background: var(--primary);
+                                                                                color: var(--white);
+                                                                                padding: 0.6rem 1.25rem;
+                                                                                border: none;
+                                                                                border-radius: 8px;
+                                                                                text-decoration: none;
+                                                                                font-weight: 600;
+                                                                                font-size: 0.9rem;
+                                                                                transition: all 0.2s ease;
+                                                                            }
+
+                                                                            .btn-nav:hover {
+                                                                                background: var(--primary-dark);
+                                                                                transform: translateY(-1px);
+                                                                            }
+
+                                                                            /* Hero Section */
+                                                                            .hero {
+                                                                                padding: 8rem 2rem 6rem;
+                                                                                background: linear-gradient(135deg, var(--gray-50) 0%, var(--white) 50%, var(--gray-50) 100%);
+                                                                                position: relative;
+                                                                                overflow: hidden;
+                                                                            }
+
+                                                                            .hero::before {
+                                                                                content: '';
+                                                                                position: absolute;
+                                                                                top: 0;
+                                                                                left: 0;
+                                                                                right: 0;
+                                                                                bottom: 0;
+                                                                                background: 
+                                                                                    radial-gradient(circle at 25% 25%, rgba(37, 99, 235, 0.08) 0%, transparent 50%),
+                                                                                    radial-gradient(circle at 75% 75%, rgba(5, 150, 105, 0.08) 0%, transparent 50%);
+                                                                                pointer-events: none;
+                                                                            }
+
+                                                                            .hero-container {
+                                                                                max-width: 1200px;
+                                                                                margin: 0 auto;
+                                                                                display: grid;
+                                                                                grid-template-columns: 1fr 1fr;
+                                                                                gap: 4rem;
+                                                                                align-items: center;
+                                                                            }
+
+                                                                            .hero-content {
+                                                                                position: relative;
+                                                                                z-index: 2;
+                                                                            }
+
+                                                                            .hero-badge {
+                                                                                display: inline-flex;
+                                                                                align-items: center;
+                                                                                gap: 0.5rem;
+                                                                                background: var(--primary);
+                                                                                color: var(--white);
+                                                                                padding: 0.4rem 1rem;
+                                                                                border-radius: 50px;
+                                                                                font-size: 0.85rem;
+                                                                                font-weight: 600;
+                                                                                margin-bottom: 2rem;
+                                                                                animation: fadeInUp 0.8s ease 0.2s both;
+                                                                            }
+
+                                                                            .hero h1 {
+                                                                                font-size: clamp(2.5rem, 5vw, 4rem);
+                                                                                font-weight: 800;
+                                                                                line-height: 1.1;
+                                                                                margin-bottom: 1.5rem;
+                                                                                color: var(--gray-900);
+                                                                                animation: fadeInUp 0.8s ease 0.4s both;
+                                                                            }
+
+                                                                            .hero-gradient-text {
+                                                                                background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+                                                                                -webkit-background-clip: text;
+                                                                                -webkit-text-fill-color: transparent;
+                                                                                background-clip: text;
+                                                                            }
+
+                                                                            .hero-subtitle {
+                                                                                font-size: 1.25rem;
+                                                                                color: var(--gray-600);
+                                                                                margin-bottom: 2.5rem;
+                                                                                line-height: 1.7;
+                                                                                animation: fadeInUp 0.8s ease 0.6s both;
+                                                                            }
+
+                                                                            .hero-cta {
+                                                                                display: flex;
+                                                                                gap: 1rem;
+                                                                                align-items: center;
+                                                                                flex-wrap: wrap;
+                                                                                margin-bottom: 3rem;
+                                                                                animation: fadeInUp 0.8s ease 0.8s both;
+                                                                            }
+
+                                                                            .btn-primary {
+                                                                                background: var(--primary);
+                                                                                color: var(--white);
+                                                                                padding: 1rem 2rem;
+                                                                                border: none;
+                                                                                border-radius: 12px;
+                                                                                font-weight: 600;
+                                                                                font-size: 1rem;
+                                                                                text-decoration: none;
+                                                                                transition: all 0.3s ease;
+                                                                                box-shadow: var(--shadow-lg);
+                                                                                display: inline-flex;
+                                                                                align-items: center;
+                                                                                gap: 0.5rem;
+                                                                            }
+
+                                                                            .btn-primary:hover {
+                                                                                background: var(--primary-dark);
+                                                                                transform: translateY(-2px);
+                                                                                box-shadow: var(--shadow-xl);
+                                                                            }
+
+                                                                            .btn-secondary {
+                                                                                background: var(--white);
+                                                                                border: 2px solid var(--gray-300);
+                                                                                color: var(--gray-700);
+                                                                                padding: 1rem 2rem;
+                                                                                border-radius: 12px;
+                                                                                font-weight: 600;
+                                                                                text-decoration: none;
+                                                                                transition: all 0.3s ease;
+                                                                                display: inline-flex;
+                                                                                align-items: center;
+                                                                                gap: 0.5rem;
+                                                                            }
+
+                                                                            .btn-secondary:hover {
+                                                                                border-color: var(--primary);
+                                                                                color: var(--primary);
+                                                                                transform: translateY(-2px);
+                                                                                box-shadow: var(--shadow-lg);
+                                                                            }
+
+                                                                            .hero-stats {
+                                                                                display: flex;
+                                                                                gap: 2rem;
+                                                                                animation: fadeInUp 0.8s ease 1s both;
+                                                                            }
+
+                                                                            .hero-stat {
+                                                                                text-align: left;
+                                                                            }
+
+                                                                            .hero-stat-number {
+                                                                                font-size: 2rem;
+                                                                                font-weight: 800;
+                                                                                color: var(--primary);
+                                                                                display: block;
+                                                                            }
+
+                                                                            .hero-stat-label {
+                                                                                color: var(--gray-600);
+                                                                                font-size: 0.9rem;
+                                                                                font-weight: 500;
+                                                                            }
+
+                                                                            /* Hero Visual */
+                                                                            .hero-visual {
+                                                                                position: relative;
+                                                                                animation: fadeInUp 0.8s ease 0.6s both;
+                                                                            }
+
+                                                                            .hero-image {
+                                                                                background: var(--white);
+                                                                                border-radius: 20px;
+                                                                                padding: 2rem;
+                                                                                box-shadow: var(--shadow-2xl);
+                                                                                border: 1px solid var(--gray-200);
+                                                                                position: relative;
+                                                                                overflow: hidden;
+                                                                            }
+
+                                                                            .hero-image::before {
+                                                                                content: '';
+                                                                                position: absolute;
+                                                                                top: 0;
+                                                                                left: 0;
+                                                                                right: 0;
+                                                                                height: 4px;
+                                                                                background: linear-gradient(135deg, var(--primary), var(--secondary));
+                                                                            }
+
+                                                                            .ai-conversation {
+                                                                                space-y: 1rem;
+                                                                            }
+
+                                                                            .message {
+                                                                                display: flex;
+                                                                                align-items: flex-start;
+                                                                                gap: 0.75rem;
+                                                                                margin-bottom: 1rem;
+                                                                            }
+
+                                                                            .message.user {
+                                                                                flex-direction: row-reverse;
+                                                                            }
+
+                                                                            .message-avatar {
+                                                                                width: 32px;
+                                                                                height: 32px;
+                                                                                border-radius: 50%;
+                                                                                display: flex;
+                                                                                align-items: center;
+                                                                                justify-content: center;
+                                                                                font-size: 0.8rem;
+                                                                                font-weight: 600;
+                                                                                flex-shrink: 0;
+                                                                            }
+
+                                                                            .message.user .message-avatar {
+                                                                                background: var(--gray-200);
+                                                                                color: var(--gray-700);
+                                                                            }
+
+                                                                            .message.ai .message-avatar {
+                                                                                background: var(--primary);
+                                                                                color: var(--white);
+                                                                            }
+
+                                                                            .message-content {
+                                                                                background: var(--gray-100);
+                                                                                padding: 0.75rem 1rem;
+                                                                                border-radius: 16px;
+                                                                                max-width: 80%;
+                                                                                font-size: 0.9rem;
+                                                                                animation: messageSlide 0.5s ease forwards;
+                                                                            }
+
+                                                                            .message.ai .message-content {
+                                                                                background: var(--primary);
+                                                                                color: var(--white);
+                                                                            }
+
+                                                                            @keyframes messageSlide {
+                                                                                from {
+                                                                                    opacity: 0;
+                                                                                    transform: translateY(10px);
+                                                                                }
+                                                                                to {
+                                                                                    opacity: 1;
+                                                                                    transform: translateY(0);
+                                                                                }
+                                                                            }
+
+                                                                            /* Trust Indicators */
+                                                                            .trust-section {
+                                                                                padding: 4rem 2rem;
+                                                                                background: var(--white);
+                                                                                border-bottom: 1px solid var(--gray-100);
+                                                                            }
+
+                                                                            .trust-container {
+                                                                                max-width: 1000px;
+                                                                                margin: 0 auto;
+                                                                                text-align: center;
+                                                                            }
+
+                                                                            .trust-title {
+                                                                                color: var(--gray-500);
+                                                                                font-size: 0.9rem;
+                                                                                font-weight: 600;
+                                                                                text-transform: uppercase;
+                                                                                letter-spacing: 0.1em;
+                                                                                margin-bottom: 2rem;
+                                                                            }
+
+                                                                            .trust-logos {
+                                                                                display: flex;
+                                                                                justify-content: center;
+                                                                                align-items: center;
+                                                                                gap: 3rem;
+                                                                                flex-wrap: wrap;
+                                                                                opacity: 0.6;
+                                                                            }
+
+                                                                            .trust-logo {
+                                                                                font-size: 1.5rem;
+                                                                                color: var(--gray-400);
+                                                                                transition: all 0.3s ease;
+                                                                            }
+
+                                                                            .trust-logo:hover {
+                                                                                color: var(--primary);
+                                                                                opacity: 1;
+                                                                            }
+
+                                                                            /* Features Section */
+                                                                            .features {
+                                                                                padding: 8rem 2rem;
+                                                                                background: var(--gray-50);
+                                                                            }
+
+                                                                            .features-container {
+                                                                                max-width: 1200px;
+                                                                                margin: 0 auto;
+                                                                            }
+
+                                                                            .features-header {
+                                                                                text-align: center;
+                                                                                margin-bottom: 5rem;
+                                                                            }
+
+                                                                            .features-header h2 {
+                                                                                font-size: clamp(2rem, 4vw, 3.5rem);
+                                                                                font-weight: 800;
+                                                                                color: var(--gray-900);
+                                                                                margin-bottom: 1rem;
+                                                                            }
+
+                                                                            .features-header p {
+                                                                                font-size: 1.2rem;
+                                                                                color: var(--gray-600);
+                                                                                max-width: 600px;
+                                                                                margin: 0 auto;
+                                                                            }
+
+                                                                            .features-grid {
+                                                                                display: grid;
+                                                                                grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+                                                                                gap: 2rem;
+                                                                            }
+
+                                                                            .feature {
+                                                                                background: var(--white);
+                                                                                border: 1px solid var(--gray-200);
+                                                                                border-radius: 20px;
+                                                                                padding: 2.5rem;
+                                                                                transition: all 0.3s ease;
+                                                                                position: relative;
+                                                                                overflow: hidden;
+                                                                            }
+
+                                                                            .feature::before {
+                                                                                content: '';
+                                                                                position: absolute;
+                                                                                top: 0;
+                                                                                left: 0;
+                                                                                width: 100%;
+                                                                                height: 3px;
+                                                                                background: linear-gradient(135deg, var(--primary), var(--secondary));
+                                                                                transform: scaleX(0);
+                                                                                transition: transform 0.3s ease;
+                                                                            }
+
+                                                                            .feature:hover::before {
+                                                                                transform: scaleX(1);
+                                                                            }
+
+                                                                            .feature:hover {
+                                                                                transform: translateY(-8px);
+                                                                                box-shadow: var(--shadow-2xl);
+                                                                                border-color: var(--primary);
+                                                                            }
+
+                                                                            .feature-icon {
+                                                                                width: 60px;
+                                                                                height: 60px;
+                                                                                border-radius: 16px;
+                                                                                background: linear-gradient(135deg, var(--primary), var(--secondary));
+                                                                                display: flex;
+                                                                                align-items: center;
+                                                                                justify-content: center;
+                                                                                margin-bottom: 1.5rem;
+                                                                                font-size: 1.5rem;
+                                                                                color: var(--white);
+                                                                                transition: all 0.3s ease;
+                                                                            }
+
+                                                                            .feature:hover .feature-icon {
+                                                                                transform: scale(1.1);
+                                                                            }
+
+                                                                            .feature h3 {
+                                                                                font-size: 1.5rem;
+                                                                                font-weight: 700;
+                                                                                margin-bottom: 1rem;
+                                                                                color: var(--gray-900);
+                                                                            }
+
+                                                                            .feature p {
+                                                                                color: var(--gray-600);
+                                                                                line-height: 1.7;
+                                                                                margin-bottom: 1.5rem;
+                                                                            }
+
+                                                                            .feature-benefits {
+                                                                                list-style: none;
+                                                                            }
+
+                                                                            .feature-benefits li {
+                                                                                display: flex;
+                                                                                align-items: center;
+                                                                                gap: 0.5rem;
+                                                                                color: var(--gray-600);
+                                                                                font-size: 0.9rem;
+                                                                                margin-bottom: 0.5rem;
+                                                                            }
+
+                                                                            .feature-benefits li i {
+                                                                                color: var(--success);
+                                                                                font-size: 0.8rem;
+                                                                            }
+
+                                                                            /* How It Works */
+                                                                            .how-it-works {
+                                                                                padding: 8rem 2rem;
+                                                                                background: var(--white);
+                                                                            }
+
+                                                                            .how-it-works-container {
+                                                                                max-width: 1200px;
+                                                                                margin: 0 auto;
+                                                                            }
+
+                                                                            .how-it-works-header {
+                                                                                text-align: center;
+                                                                                margin-bottom: 5rem;
+                                                                            }
+
+                                                                            .how-it-works-header h2 {
+                                                                                font-size: clamp(2rem, 4vw, 3.5rem);
+                                                                                font-weight: 800;
+                                                                                color: var(--gray-900);
+                                                                                margin-bottom: 1rem;
+                                                                            }
+
+                                                                            .how-it-works-header p {
+                                                                                font-size: 1.2rem;
+                                                                                color: var(--gray-600);
+                                                                                max-width: 600px;
+                                                                                margin: 0 auto;
+                                                                            }
+
+                                                                            .steps {
+                                                                                display: grid;
+                                                                                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                                                                                gap: 3rem;
+                                                                            }
+
+                                                                            .step {
+                                                                                text-align: center;
+                                                                                position: relative;
+                                                                            }
+
+                                                                            .step-number {
+                                                                                width: 60px;
+                                                                                height: 60px;
+                                                                                border-radius: 50%;
+                                                                                background: var(--primary);
+                                                                                color: var(--white);
+                                                                                display: flex;
+                                                                                align-items: center;
+                                                                                justify-content: center;
+                                                                                font-size: 1.5rem;
+                                                                                font-weight: 800;
+                                                                                margin: 0 auto 2rem;
+                                                                                position: relative;
+                                                                                z-index: 2;
+                                                                            }
+
+                                                                            .step::before {
+                                                                                content: '';
+                                                                                position: absolute;
+                                                                                top: 30px;
+                                                                                left: 50%;
+                                                                                width: 100%;
+                                                                                height: 2px;
+                                                                                background: var(--gray-200);
+                                                                                z-index: 1;
+                                                                            }
+
+                                                                            .step:last-child::before {
+                                                                                display: none;
+                                                                            }
+
+                                                                            .step h3 {
+                                                                                font-size: 1.5rem;
+                                                                                font-weight: 700;
+                                                                                margin-bottom: 1rem;
+                                                                                color: var(--gray-900);
+                                                                            }
+
+                                                                            .step p {
+                                                                                color: var(--gray-600);
+                                                                                line-height: 1.7;
+                                                                            }
+
+                                                                            /* Testimonials */
+                                                                            .testimonials {
+                                                                                padding: 8rem 2rem;
+                                                                                background: var(--gray-50);
+                                                                            }
+
+                                                                            .testimonials-container {
+                                                                                max-width: 1200px;
+                                                                                margin: 0 auto;
+                                                                            }
+
+                                                                            .testimonials-header {
+                                                                                text-align: center;
+                                                                                margin-bottom: 5rem;
+                                                                            }
+
+                                                                            .testimonials-header h2 {
+                                                                                font-size: clamp(2rem, 4vw, 3.5rem);
+                                                                                font-weight: 800;
+                                                                                color: var(--gray-900);
+                                                                                margin-bottom: 1rem;
+                                                                            }
+
+                                                                            .testimonials-grid {
+                                                                                display: grid;
+                                                                                grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+                                                                                gap: 2rem;
+                                                                            }
+
+                                                                            .testimonial {
+                                                                                background: var(--white);
+                                                                                border: 1px solid var(--gray-200);
+                                                                                border-radius: 20px;
+                                                                                padding: 2.5rem;
+                                                                                transition: all 0.3s ease;
+                                                                                position: relative;
+                                                                            }
+
+                                                                            .testimonial:hover {
+                                                                                transform: translateY(-5px);
+                                                                                box-shadow: var(--shadow-xl);
+                                                                                border-color: var(--primary);
+                                                                            }
+
+                                                                            .testimonial-header {
+                                                                                display: flex;
+                                                                                align-items: center;
+                                                                                gap: 1rem;
+                                                                                margin-bottom: 1.5rem;
+                                                                            }
+
+                                                                            .testimonial-avatar {
+                                                                                width: 50px;
+                                                                                height: 50px;
+                                                                                border-radius: 50%;
+                                                                                background: linear-gradient(135deg, var(--primary), var(--secondary));
+                                                                                display: flex;
+                                                                                align-items: center;
+                                                                                justify-content: center;
+                                                                                color: var(--white);
+                                                                                font-weight: 600;
+                                                                                font-size: 1.1rem;
+                                                                            }
+
+                                                                            .testimonial-author h4 {
+                                                                                font-weight: 600;
+                                                                                color: var(--gray-900);
+                                                                                margin-bottom: 0.2rem;
+                                                                            }
+
+                                                                            .testimonial-author p {
+                                                                                color: var(--gray-500);
+                                                                                font-size: 0.85rem;
+                                                                            }
+
+                                                                            .testimonial-rating {
+                                                                                color: #f59e0b;
+                                                                                font-size: 1rem;
+                                                                                margin-bottom: 1.5rem;
+                                                                            }
+
+                                                                            .testimonial-text {
+                                                                                color: var(--gray-700);
+                                                                                line-height: 1.7;
+                                                                                font-style: italic;
+                                                                            }
+
+                                                                            /* CTA Section */
+                                                                            .cta-section {
+                                                                                padding: 8rem 2rem;
+                                                                                background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+                                                                                color: var(--white);
+                                                                                text-align: center;
+                                                                                position: relative;
+                                                                                overflow: hidden;
+                                                                            }
+
+                                                                            .cta-section::before {
+                                                                                content: '';
+                                                                                position: absolute;
+                                                                                top: 0;
+                                                                                left: 0;
+                                                                                right: 0;
+                                                                                bottom: 0;
+                                                                                background: 
+                                                                                    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                                                                                    radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+                                                                                pointer-events: none;
+                                                                            }
+
+                                                                            .cta-container {
+                                                                                max-width: 800px;
+                                                                                margin: 0 auto;
+                                                                                position: relative;
+                                                                                z-index: 2;
+                                                                            }
+
+                                                                            .cta-section h2 {
+                                                                                font-size: clamp(2rem, 4vw, 3.5rem);
+                                                                                font-weight: 800;
+                                                                                margin-bottom: 1.5rem;
+                                                                            }
+
+                                                                            .cta-section p {
+                                                                                font-size: 1.2rem;
+                                                                                opacity: 0.9;
+                                                                                margin-bottom: 3rem;
+                                                                                max-width: 600px;
+                                                                                margin-left: auto;
+                                                                                margin-right: auto;
+                                                                            }
+
+                                                                            .cta-buttons {
+                                                                                display: flex;
+                                                                                gap: 1rem;
+                                                                                justify-content: center;
+                                                                                flex-wrap: wrap;
+                                                                            }
+
+                                                                            .btn-cta {
+                                                                                background: var(--white);
+                                                                                color: var(--primary);
+                                                                                padding: 1rem 2rem;
+                                                                                border: none;
+                                                                                border-radius: 12px;
+                                                                                font-weight: 600;
+                                                                                font-size: 1rem;
+                                                                                text-decoration: none;
+                                                                                transition: all 0.3s ease;
+                                                                                box-shadow: var(--shadow-lg);
+                                                                                display: inline-flex;
+                                                                                align-items: center;
+                                                                                gap: 0.5rem;
+                                                                            }
+
+                                                                            .btn-cta:hover {
+                                                                                transform: translateY(-2px);
+                                                                                box-shadow: var(--shadow-xl);
+                                                                            }
+
+                                                                            /* Footer */
+                                                                            .footer {
+                                                                                background: var(--gray-900);
+                                                                                color: var(--gray-300);
+                                                                                padding: 4rem 2rem 2rem;
+                                                                            }
+
+                                                                            .footer-content {
+                                                                                max-width: 1200px;
+                                                                                margin: 0 auto;
+                                                                                display: grid;
+                                                                                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                                                                                gap: 3rem;
+                                                                            }
+
+                                                                            .footer-section h3 {
+                                                                                margin-bottom: 1.5rem;
+                                                                                color: var(--white);
+                                                                                font-weight: 600;
+                                                                            }
+
+                                                                            .footer-section p,
+                                                                            .footer-section a {
+                                                                                color: var(--gray-400);
+                                                                                text-decoration: none;
+                                                                                line-height: 2;
+                                                                                transition: color 0.3s ease;
+                                                                            }
+
+                                                                            .footer-section a:hover {
+                                                                                color: var(--white);
+                                                                            }
+
+                                                                            .footer-bottom {
+                                                                                border-top: 1px solid var(--gray-700);
+                                                                                margin-top: 3rem;
+                                                                                padding-top: 2rem;
+                                                                                text-align: center;
+                                                                                color: var(--gray-500);
+                                                                            }
+
+                                                                            /* Animations */
+                                                                            @keyframes fadeInUp {
+                                                                                from {
+                                                                                    opacity: 0;
+                                                                                    transform: translateY(30px);
+                                                                                }
+                                                                                to {
+                                                                                    opacity: 1;
+                                                                                    transform: translateY(0);
+                                                                                }
+                                                                            }
+
+                                                                            .scroll-reveal {
+                                                                                opacity: 0;
+                                                                                transform: translateY(50px);
+                                                                                transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+                                                                            }
+
+                                                                            .scroll-reveal.revealed {
+                                                                                opacity: 1;
+                                                                                transform: translateY(0);
+                                                                            }
+
+                                                                            /* Mobile Responsive */
+                                                                            @media (max-width: 768px) {
+                                                                                .nav-links {
+                                                                                    gap: 1rem;
+                                                                                }
+
+                                                                                .hero-container {
+                                                                                    grid-template-columns: 1fr;
+                                                                                    gap: 3rem;
+                                                                                    text-align: center;
+                                                                                }
+
+                                                                                .hero {
+                                                                                    padding: 6rem 1rem 4rem;
+                                                                                }
+
+                                                                                .hero-stats {
+                                                                                    justify-content: center;
+                                                                                }
+
+                                                                                .features-grid {
+                                                                                    grid-template-columns: 1fr;
+                                                                                }
+
+                                                                                .steps {
+                                                                                    grid-template-columns: 1fr;
+                                                                                }
+
+                                                                                .step::before {
+                                                                                    display: none;
+                                                                                }
+
+                                                                                .testimonials-grid {
+                                                                                    grid-template-columns: 1fr;
+                                                                                }
+
+                                                                                .cta-buttons {
+                                                                                    flex-direction: column;
+                                                                                    align-items: center;
+                                                                                }
+                                                                            }
+                                                                        </style>
+                                                                    </head>
+                                                                    <body>
+                                                                        <!-- Navigation -->
+                                                                        <nav class="navbar" id="navbar">
+                                                                            <div class="nav-container">
+                                                                                <a href="/" class="logo">
+                                                                                    <i class="fas fa-home"></i>
+                                                                                    Dwellyo.ai
+                                                                                </a>
+                                                                                <div class="nav-links">
+                                                                                    <% if (user) { %>
+                                                                                        <a href="/dashboard">Dashboard</a>
+                                                                                        <a href="/properties">Properties</a>
+                                                                                        <a href="/logout">Logout</a>
+                                                                                    <% } else { %>
+                                                                                        <a href="#features">Features</a>
+                                                                                        <a href="#how-it-works">How it Works</a>
+                                                                                        <a href="/pricing">Pricing</a>
+                                                                                        <a href="/login">Login</a>
+                                                                                        <a href="/register" class="btn-nav">Start Free Trial</a>
+                                                                                    <% } %>
+                                                                                </div>
+                                                                            </div>
+                                                                        </nav>
+
+                                                                        <!-- Hero Section -->
+                                                                        <section class="hero">
+                                                                            <div class="hero-container">
+                                                                                <div class="hero-content">
+                                                                                    <div class="hero-badge">
+                                                                                        <i class="fas fa-robot"></i>
+                                                                                        AI Property Management
+                                                                                    </div>
+
+                                                                                    <h1>
+                                                                                        Your Properties.<br>
+                                                                                        <span class="hero-gradient-text">AI Managed.</span><br>
+                                                                                        24/7 Automated.
+                                                                                    </h1>
+
+                                                                                    <p class="hero-subtitle">
+                                                                                        Let our intelligent AI handle tenant inquiries, schedule viewings, screen applicants, and manage your entire rental process. Focus on growing your portfolio while AI handles the rest.
+                                                                                    </p>
+
+                                                                                    <div class="hero-cta">
+                                                                                        <% if (user) { %>
+                                                                                            <a href="/dashboard" class="btn-primary">
+                                                                                                <i class="fas fa-tachometer-alt"></i>
+                                                                                                Go to Dashboard
+                                                                                            </a>
+                                                                                        <% } else { %>
+                                                                                            <a href="/register" class="btn-primary">
+                                                                                                <i class="fas fa-rocket"></i>
+                                                                                                Start Free Trial
+                                                                                            </a>
+                                                                                            <a href="#features" class="btn-secondary">
+                                                                                                <i class="fas fa-info-circle"></i>
+                                                                                                Learn More
+                                                                                            </a>
+                                                                                        <% } %>
+                                                                                    </div>
+
+                                                                                    <div class="hero-stats">
+                                                                                        <div class="hero-stat">
+                                                                                            <span class="hero-stat-number">2,500+</span>
+                                                                                            <span class="hero-stat-label">Properties Managed</span>
+                                                                                        </div>
+                                                                                        <div class="hero-stat">
+                                                                                            <span class="hero-stat-number">99.1%</span>
+                                                                                            <span class="hero-stat-label">Response Accuracy</span>
+                                                                                        </div>
+                                                                                        <div class="hero-stat">
+                                                                                            <span class="hero-stat-number">€4.2M</span>
+                                                                                            <span class="hero-stat-label">Rent Processed</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="hero-visual">
+                                                                                    <div class="hero-image">
+                                                                                        <div class="ai-conversation">
+                                                                                            <div class="message user">
+                                                                                                <div class="message-avatar">JD</div>
+                                                                                                <div class="message-content">Hi, is the 2BR apartment still available?</div>
+                                                                                            </div>
+                                                                                            <div class="message ai">
+                                                                                                <div class="message-avatar">AI</div>
+                                                                                                <div class="message-content">Yes! The beautiful 2BR on Hlavná Street is available. €1,200/month, move-in ready. Would you like to schedule a viewing?</div>
+                                                                                            </div>
+                                                                                            <div class="message user">
+                                                                                                <div class="message-avatar">JD</div>
+                                                                                                <div class="message-content">Yes please! This weekend works for me</div>
+                                                                                            </div>
+                                                                                            <div class="message ai">
+                                                                                                <div class="message-avatar">AI</div>
+                                                                                                <div class="message-content">Perfect! I've booked you for Saturday at 2 PM. Address: Hlavná 123, Bratislava. I'll send confirmation details to your email. See you there! 🏠</div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </section>
+
+                                                                        <!-- Trust Indicators -->
+                                                                        <section class="trust-section">
+                                                                            <div class="trust-container">
+                                                                                <p class="trust-title">Trusted by Property Professionals</p>
+                                                                                <div class="trust-logos">
+                                                                                    <div class="trust-logo"><i class="fas fa-building"></i></div>
+                                                                                    <div class="trust-logo"><i class="fas fa-home"></i></div>
+                                                                                    <div class="trust-logo"><i class="fas fa-city"></i></div>
+                                                                                    <div class="trust-logo"><i class="fas fa-landmark"></i></div>
+                                                                                    <div class="trust-logo"><i class="fas fa-store"></i></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </section>
+
+                                                                        <!-- Features Section -->
+                                                                        <section class="features scroll-reveal" id="features">
+                                                                            <div class="features-container">
+                                                                                <div class="features-header">
+                                                                                    <h2>Everything You Need to Automate Rentals</h2>
+                                                                                    <p>Our AI handles every aspect of property management, from initial inquiries to signed leases.</p>
+                                                                                </div>
+
+                                                                                <div class="features-grid">
+                                                                                    <div class="feature">
+                                                                                        <div class="feature-icon">
+                                                                                            <i class="fas fa-comments"></i>
+                                                                                        </div>
+                                                                                        <h3>Intelligent Tenant Communication</h3>
+                                                                                        <p>AI responds to inquiries instantly with human-like intelligence, answering complex questions about your properties in your tone and style.</p>
+                                                                                        <ul class="feature-benefits">
+                                                                                            <li><i class="fas fa-check-circle"></i> 24/7 instant responses</li>
+                                                                                            <li><i class="fas fa-check-circle"></i> Multi-language support</li>
+                                                                                            <li><i class="fas fa-check-circle"></i> Learns your communication style</li>
+                                                                                            <li><i class="fas fa-check-circle"></i> WhatsApp, Email, SMS integration</li>
+                                                                                        </ul>
+                                                                                    </div>
+
+                                                                                    <div class="feature">
+                                                                                        <div class="feature-icon">
+                                                                                            <i class="fas fa-calendar-alt"></i>
+                                                                                        </div>
+                                                                                        <h3>Smart Viewing Scheduler</h3>
+                                                                                        <p>Automatically coordinate viewing appointments with your calendar, send confirmations, and manage rescheduling without your involvement.</p>
+                                                                                        <ul class="feature-benefits">
+                                                                                            <li><i class="fas fa-check-circle"></i> Calendar integration</li>
+                                                                                            <li><i class="fas fa-check-circle"></i> Automatic confirmations</li>
+                                                                                            <li><i class="fas fa-check-circle"></i> No-show management</li>
+                                                                                            <li><i class="fas fa-check-circle"></i> Weather-based rescheduling</li>
+                                                                                        </ul>
+                                                                                    </div>
+
+                                                                                    <div class="feature">
+                                                                                        <div class="feature-icon">
+                                                                                            <i class="fas fa-user-check"></i>
+                                                                                        </div>
+                                                                                        <h3>AI Tenant Screening</h3>
+                                                                                        <p>Advanced algorithms evaluate tenant applications, check references, and provide quality scores to help you choose the best tenants.</p>
+                                                                                        <ul class="feature-benefits">
+                                                                                            <li><i class="fas fa-check-circle"></i> Credit check automation</li>
+                                                                                            <li><i class="fas fa-check-circle"></i> Income verification</li>
+                                                                                            <li><i class="fas fa-check-circle"></i> Reference checking</li>
+                                                                                            <li><i class="fas fa-check-circle"></i> Risk assessment scoring</li>
+                                                                                        </ul>
+                                                                                    </div>
+
+                                                                                    <div class="feature">
+                                                                                        <div class="feature-icon">
+                                                                                            <i class="fas fa-file-signature"></i>
+                                                                                        </div>
+                                                                                        <h3>Digital Lease Management</h3>
+                                                                                        <p>Generate legally compliant lease agreements, collect digital signatures, manage renewals, and handle all documentation automatically.</p>
+                                                                                        <ul class="feature-benefits">
+                                                                                            <li><i class="fas fa-check-circle"></i> Legal contract templates</li>
+                                                                                            <li><i class="fas fa-check-circle"></i> E-signature collection</li>
+                                                                                            <li><i class="fas fa-check-circle"></i> Automatic renewals</li>
+                                                                                            <li><i class="fas fa-check-circle"></i> Document storage</li>
+                                                                                        </ul>
+                                                                                    </div>
+
+                                                                                    <div class="feature">
+                                                                                        <div class="feature-icon">
+                                                                                            <i class="fas fa-chart-line"></i>
+                                                                                        </div>
+                                                                                        <h3>Property Analytics & Insights</h3>
+                                                                                        <p>Get detailed analytics on property performance, tenant behavior, and market trends to optimize your rental income and strategy.</p>
+                                                                                        <ul class="feature-benefits">
+                                                                                            <li><i class="fas fa-check-circle"></i> Revenue optimization</li>
+                                                                                            <li><i class="fas fa-check-circle"></i> Market analysis</li>
+                                                                                            <li><i class="fas fa-check-circle"></i> Tenant insights</li>
+                                                                                            <li><i class="fas fa-check-circle"></i> Performance tracking</li>
+                                                                                        </ul>
+                                                                                    </div>
+
+                                                                                    <div class="feature">
+                                                                                        <div class="feature-icon">
+                                                                                            <i class="fas fa-shield-alt"></i>
+                                                                                        </div>
+                                                                                        <h3>Maintenance & Issue Resolution</h3>
+                                                                                        <p>AI handles maintenance requests, coordinates with contractors, and keeps tenants informed throughout the repair process.</p>
+                                                                                        <ul class="feature-benefits">
+                                                                                            <li><i class="fas fa-check-circle"></i> Issue classification</li>
+                                                                                            <li><i class="fas fa-check-circle"></i> Contractor coordination</li>
+                                                                                            <li><i class="fas fa-check-circle"></i> Progress tracking</li>
+                                                                                            <li><i class="fas fa-check-circle"></i> Tenant updates</li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </section>
+
+                                                                        <!-- How It Works -->
+                                                                        <section class="how-it-works scroll-reveal" id="how-it-works">
+                                                                            <div class="how-it-works-container">
+                                                                                <div class="how-it-works-header">
+                                                                                    <h2>How Dwellyo Transforms Your Business</h2>
+                                                                                    <p>Get started in minutes and watch AI take over your rental management</p>
+                                                                                </div>
+
+                                                                                <div class="steps">
+                                                                                    <div class="step">
+                                                                                        <div class="step-number">1</div>
+                                                                                        <h3>Add Your Properties</h3>
+                                                                                        <p>Upload property details, photos, and rental terms. Our AI learns about each property and creates optimized listings across multiple platforms.</p>
+                                                                                    </div>
+
+                                                                                    <div class="step">
+                                                                                        <div class="step-number">2</div>
+                                                                                        <h3>Connect Your Channels</h3>
+                                                                                        <p>Link your WhatsApp, email, and property portals. AI responds to inquiries instantly across all channels with consistent, professional communication.</p>
+                                                                                    </div>
+
+                                                                                    <div class="step">
+                                                                                        <div class="step-number">3</div>
+                                                                                        <h3>AI Takes Over</h3>
+                                                                                        <p>Watch as AI handles inquiries, books viewings, screens tenants, and manages the entire rental process. You just review final decisions and collect rent.</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </section>
+
+                                                                        <!-- Testimonials -->
+                                                                        <section class="testimonials scroll-reveal">
+                                                                            <div class="testimonials-container">
+                                                                                <div class="testimonials-header">
+                                                                                    <h2>Loved by Property Owners</h2>
+                                                                                </div>
+
+                                                                                <div class="testimonials-grid">
+                                                                                    <div class="testimonial">
+                                                                                        <div class="testimonial-header">
+                                                                                            <div class="testimonial-avatar">MK</div>
+                                                                                            <div class="testimonial-author">
+                                                                                                <h4>Martin Kováč</h4>
+                                                                                                <p>Property Investor • 18 Properties</p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="testimonial-rating">★★★★★</div>
+                                                                                        <p class="testimonial-text">"Dwellyo completely transformed my business. I went from spending 30 hours a week on admin to maybe 2 hours reviewing AI decisions. The quality is incredible - my tenants are happier and I'm making more money."</p>
+                                                                                    </div>
+
+                                                                                    <div class="testimonial">
+                                                                                        <div class="testimonial-header">
+                                                                                            <div class="testimonial-avatar">JS</div>
+                                                                                            <div class="testimonial-author">
+                                                                                                <h4>Jana Svoboda</h4>
+                                                                                                <p>Real Estate Agent • Prague</p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="testimonial-rating">★★★★★</div>
+                                                                                        <p class="testimonial-text">"The AI is so sophisticated that prospects think they're talking to me. It books more viewings, asks better qualifying questions, and never misses a lead. ROI was positive in the first month."</p>
+                                                                                    </div>
+
+                                                                                    <div class="testimonial">
+                                                                                        <div class="testimonial-header">
+                                                                                            <div class="testimonial-avatar">PH</div>
+                                                                                            <div class="testimonial-author">
+                                                                                                <h4>Peter Horváth</h4>
+                                                                                                <p>Property Manager • Vienna</p>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="testimonial-rating">★★★★★</div>
+                                                                                        <p class="testimonial-text">"I manage 50+ units and was drowning in messages. Dwellyo's AI handles everything perfectly - from maintenance requests to lease renewals. It's like having a team of expert assistants who never sleep."</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </section>
+
+                                                                        <!-- CTA Section -->
+                                                                        <section class="cta-section scroll-reveal">
+                                                                            <div class="cta-container">
+                                                                                <h2>Ready to 10X Your Rental Business?</h2>
+                                                                                <p>Join thousands of property owners who've automated their rental management with AI. Start your free trial and see the transformation in 24 hours.</p>
+
+                                                                                <div class="cta-buttons">
+                                                                                    <% if (!user) { %>
+                                                                                        <a href="/register" class="btn-cta">
+                                                                                            <i class="fas fa-rocket"></i>
+                                                                                            Start Free 14-Day Trial
+                                                                                        </a>
+                                                                                        <a href="/pricing" class="btn-secondary">
+                                                                                            <i class="fas fa-tag"></i>
+                                                                                            View Pricing Plans
+                                                                                        </a>
+                                                                                    <% } else { %>
+                                                                                        <a href="/properties" class="btn-cta">
+                                                                                            <i class="fas fa-plus"></i>
+                                                                                            Add Your First Property
+                                                                                        </a>
+                                                                                    <% } %>
+                                                                                </div>
+                                                                            </div>
+                                                                        </section>
+
+                                                                        <!-- Footer -->
+                                                                        <footer class="footer">
+                                                                            <div class="footer-content">
+                                                                                <div class="footer-section">
+                                                                                    <h3>Dwellyo.ai</h3>
+                                                                                    <p>The most advanced AI platform for property management. Automate tenant communication, viewings, screening, and contracts with intelligent automation.</p>
+                                                                                </div>
+                                                                                <div class="footer-section">
+                                                                                    <h3>Product</h3>
+                                                                                    <a href="#features">AI Features</a><br>
+                                                                                    <a href="/pricing">Pricing Plans</a><br>
+                                                                                    <a href="#how-it-works">How it Works</a><br>
+                                                                                    <a href="/register">Free Trial</a><br>
+                                                                                    <a href="#">API Access</a>
+                                                                                </div>
+                                                                                <div class="footer-section">
+                                                                                    <h3>Support</h3>
+                                                                                    <a href="mailto:support@dwellyo.ai">24/7 Support</a><br>
+                                                                                    <a href="#">Help Center</a><br>
+                                                                                    <a href="#">Getting Started</a><br>
+                                                                                    <a href="#">Community Forum</a><br>
+                                                                                    <a href="#">Video Tutorials</a>
+                                                                                </div>
+                                                                                <div class="footer-section">
+                                                                                    <h3>Company</h3>
+                                                                                    <a href="#">About Dwellyo</a><br>
+                                                                                    <a href="#">Privacy Policy</a><br>
+                                                                                    <a href="#">Terms of Service</a><br>
+                                                                                    <a href="#">GDPR Compliance</a><br>
+                                                                                    <a href="#">Security</a>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="footer-bottom">
+                                                                                <p>&copy; 2025 Dwellyo.ai. All rights reserved. Revolutionizing property management with AI. 🏠</p>
+                                                                            </div>
+                                                                        </footer>
+
+                                                                        <script>
+                                                                            // Enhanced navbar scroll effect
+                                                                            window.addEventListener('scroll', () => {
+                                                                                const navbar = document.getElementById('navbar');
+                                                                                if (window.scrollY > 50) {
+                                                                                    navbar.classList.add('scrolled');
+                                                                                } else {
+                                                                                    navbar.classList.remove('scrolled');
+                                                                                }
+                                                                            });
+
+                                                                            // Smooth scrolling for anchor links
+                                                                            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                                                                                anchor.addEventListener('click', function (e) {
+                                                                                    e.preventDefault();
+                                                                                    const target = document.querySelector(this.getAttribute('href'));
+                                                                                    if (target) {
+                                                                                        target.scrollIntoView({
+                                                                                            behavior: 'smooth',
+                                                                                            block: 'start'
+                                                                                        });
+                                                                                    }
+                                                                                });
+                                                                            });
+
+                                                                            // Advanced scroll reveal animation
+                                                                            const observerOptions = {
+                                                                                threshold: 0.1,
+                                                                                rootMargin: '0px 0px -50px 0px'
+                                                                            };
+
+                                                                            const observer = new IntersectionObserver((entries) => {
+                                                                                entries.forEach(entry => {
+                                                                                    if (entry.isIntersecting) {
+                                                                                        entry.target.classList.add('revealed');
+                                                                                    }
+                                                                                });
+                                                                            }, observerOptions);
+
+                                                                            // Observe all scroll reveal elements
+                                                                            document.querySelectorAll('.scroll-reveal').forEach(el => {
+                                                                                observer.observe(el);
+                                                                            });
+
+                                                                            // Animate hero stats counters
+                                                                            function animateCounter(element, target, suffix = '') {
+                                                                                let current = 0;
+                                                                                const increment = target / 60;
+                                                                                const timer = setInterval(() => {
+                                                                                    current += increment;
+                                                                                    if (current >= target) {
+                                                                                        current = target;
+                                                                                        clearInterval(timer);
+                                                                                    }
+
+                                                                                    if (suffix === '€') {
+                                                                                        element.textContent = `€${current.toFixed(1)}M`;
+                                                                                    } else if (suffix === '%') {
+                                                                                        element.textContent = `${current.toFixed(1)}%`;
+                                                                                    } else {
+                                                                                        element.textContent = `${Math.floor(current).toLocaleString()}+`;
+                                                                                    }
+                                                                                }, 16);
+                                                                            }
+
+                                                                            // Trigger counter animations
+                                                                            const statsObserver = new IntersectionObserver((entries) => {
+                                                                                entries.forEach(entry => {
+                                                                                    if (entry.isIntersecting) {
+                                                                                        const statNumbers = entry.target.querySelectorAll('.hero-stat-number');
+                                                                                        statNumbers.forEach(stat => {
+                                                                                            const text = stat.textContent;
+                                                                                            if (text.includes('2,500')) animateCounter(stat, 2500);
+                                                                                            else if (text.includes('99.1')) animateCounter(stat, 99.1, '%');
+                                                                                            else if (text.includes('4.2')) animateCounter(stat, 4.2, '€');
+                                                                                        });
+                                                                                        statsObserver.unobserve(entry.target);
+                                                                                    }
+                                                                                });
+                                                                            });
+
+                                                                            const heroStats = document.querySelector('.hero-stats');
+                                                                            if (heroStats) {
+                                                                                statsObserver.observe(heroStats);
+                                                                            }
+
+                                                                            // Enhanced hover effects
+                                                                            document.querySelectorAll('.feature, .testimonial').forEach(card => {
+                                                                                card.addEventListener('mouseenter', function() {
+                                                                                    this.style.transform = 'translateY(-10px)';
+                                                                                });
+
+                                                                                card.addEventListener('mouseleave', function() {
+                                                                                    this.style.transform = 'translateY(0)';
+                                                                                });
+                                                                            });
+
+                                                                            // Animate conversation messages on page load
+                                                                            window.addEventListener('load', () => {
+                                                                                const messages = document.querySelectorAll('.message');
+                                                                                messages.forEach((message, index) => {
+                                                                                    setTimeout(() => {
+                                                                                        message.style.opacity = '1';
+                                                                                        message.style.transform = 'translateY(0)';
+                                                                                    }, index * 800);
+                                                                                });
+                                                                            });
+
+                                                                            // Add subtle parallax effect
+                                                                            window.addEventListener('scroll', () => {
+                                                                                const scrolled = window.pageYOffset;
+                                                                                const hero = document.querySelector('.hero');
+                                                                                const speed = scrolled * 0.3;
+                                                                                hero.style.transform = `translateY(${speed}px)`;
+                                                                            });
+
+                                                                            // Button ripple effect
+                                                                            document.querySelectorAll('.btn-primary, .btn-secondary, .btn-cta, .btn-nav').forEach(button => {
+                                                                                button.addEventListener('click', function(e) {
+                                                                                    const ripple = document.createElement('div');
+                                                                                    const rect = this.getBoundingClientRect();
+                                                                                    const size = Math.max(rect.width, rect.height);
+                                                                                    const x = e.clientX - rect.left - size / 2;
+                                                                                    const y = e.clientY - rect.top - size / 2;
+
+                                                                                    ripple.style.cssText = `
+                                                                                        position: absolute;
+                                                                                        width: ${size}px;
+                                                                                        height: ${size}px;
+                                                                                        left: ${x}px;
+                                                                                        top: ${y}px;
+                                                                                        background: rgba(255, 255, 255, 0.3);
+                                                                                        border-radius: 50%;
+                                                                                        transform: scale(0);
+                                                                                        animation: ripple 0.6s linear;
+                                                                                        pointer-events: none;
+                                                                                    `;
+
+                                                                                    this.style.position = 'relative';
+                                                                                    this.style.overflow = 'hidden';
+                                                                                    this.appendChild(ripple);
+
+                                                                                    setTimeout(() => {
+                                                                                        ripple.remove();
+                                                                                    }, 600);
+                                                                                });
+                                                                            });
+
+                                                                            // Add ripple animation keyframes
+                                                                            const style = document.createElement('style');
+                                                                            style.textContent = `
+                                                                                @keyframes ripple {
+                                                                                    to {
+                                                                                        transform: scale(4);
+                                                                                        opacity: 0;
+                                                                                    }
+                                                                                }
+                                                                            `;
+                                                                            document.head.appendChild(style);
+
+                                                                            console.log('🏠 Dwellyo.ai - Property Management Reimagined');
+                                                                            console.log('🤖 AI-Powered Real Estate Solution Loaded');
+                                                                        </script>
+                                                                    </body>
+                                                                    </html>
